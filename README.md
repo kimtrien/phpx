@@ -56,18 +56,44 @@ RUN composer install --no-dev --optimize-autoloader
 ## Available Tags
 
 ### Docker Hub
+
+**Latest/Stable:**
 - `kimtrien/phpx:latest` - Latest stable (currently PHP 8.5)
 - `kimtrien/phpx:php8.5` - PHP 8.5 (recommended)
 - `kimtrien/phpx:php8.4` - PHP 8.4
-- `kimtrien/phpx:php8.5-frankenphp1.12` - Specific versions
-- `kimtrien/phpx:php8.4-frankenphp1.12` - Specific versions
+
+**Version-specific (with FrankenPHP):**
+- `kimtrien/phpx:php8.5-frankenphp1.12`
+- `kimtrien/phpx:php8.4-frankenphp1.12`
+
+**Release tags (when you push GitHub tags like `v1.0.0`):**
+- `kimtrien/phpx:v1.0.0` - PHP 8.5 (default)
+- `kimtrien/phpx:1.0.0` - PHP 8.5 (default)
+- `kimtrien/phpx:1.0` - PHP 8.5 (default)
+- `kimtrien/phpx:v1.0.0-php8.5` - PHP 8.5 explicit
+- `kimtrien/phpx:v1.0.0-php8.4` - PHP 8.4 explicit
+- `kimtrien/phpx:1.0.0-php8.5` - PHP 8.5 explicit
+- `kimtrien/phpx:1.0.0-php8.4` - PHP 8.4 explicit
 
 ### GitHub Container Registry
+
+**Latest/Stable:**
 - `ghcr.io/kimtrien/phpx:latest` - Latest stable (currently PHP 8.5)
 - `ghcr.io/kimtrien/phpx:php8.5` - PHP 8.5 (recommended)
 - `ghcr.io/kimtrien/phpx:php8.4` - PHP 8.4
-- `ghcr.io/kimtrien/phpx:php8.5-frankenphp1.12` - Specific versions
-- `ghcr.io/kimtrien/phpx:php8.4-frankenphp1.12` - Specific versions
+
+**Version-specific (with FrankenPHP):**
+- `ghcr.io/kimtrien/phpx:php8.5-frankenphp1.12`
+- `ghcr.io/kimtrien/phpx:php8.4-frankenphp1.12`
+
+**Release tags (when you push GitHub tags like `v1.0.0`):**
+- `ghcr.io/kimtrien/phpx:v1.0.0` - PHP 8.5 (default)
+- `ghcr.io/kimtrien/phpx:1.0.0` - PHP 8.5 (default)
+- `ghcr.io/kimtrien/phpx:1.0` - PHP 8.5 (default)
+- `ghcr.io/kimtrien/phpx:v1.0.0-php8.5` - PHP 8.5 explicit
+- `ghcr.io/kimtrien/phpx:v1.0.0-php8.4` - PHP 8.4 explicit
+- `ghcr.io/kimtrien/phpx:1.0.0-php8.5` - PHP 8.5 explicit
+- `ghcr.io/kimtrien/phpx:1.0.0-php8.4` - PHP 8.4 explicit
 
 ## Multi-Architecture Support
 
@@ -129,9 +155,24 @@ To enable automated builds, add these secrets to your repository:
 
 The workflow automatically builds and pushes on:
 - Push to `main` branch (builds both PHP 8.4 and 8.5)
-- New version tags (`v*`)
+- New version tags (`v*`) - automatically creates matching Docker tags
 - Weekly schedule (Sunday at midnight UTC)
 - Manual workflow dispatch
+
+### Release Tagging
+
+When you push a GitHub tag, Docker images are automatically tagged:
+
+```bash
+# Create and push a release tag
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+This creates Docker images with tags:
+- `v1.0.0`, `1.0.0`, `1.0` (PHP 8.5 default)
+- `v1.0.0-php8.5`, `1.0.0-php8.5`, `1.0-php8.5` (PHP 8.5 explicit)
+- `v1.0.0-php8.4`, `1.0.0-php8.4`, `1.0-php8.4` (PHP 8.4 explicit)
 
 ## Contributing
 
