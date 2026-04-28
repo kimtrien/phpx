@@ -24,7 +24,7 @@ jobs:
     strategy:
       matrix:
         php_version: ['8.4', '8.5']
-        frankenphp_version: ['1.4']
+        frankenphp_version: ['1.12']
 
     steps:
       - name: Checkout repository

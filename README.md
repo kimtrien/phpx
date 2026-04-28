@@ -8,7 +8,7 @@ Production-ready PHP base image powered by FrankenPHP with all common extensions
 
 ## Features
 
-- **FrankenPHP 1.4** - Modern PHP application server
+- **FrankenPHP 1.12** - Modern PHP application server
 - **PHP 8.5 & 8.4** - Latest PHP versions
 - **Alpine Linux** - Minimal footprint
 - **Multi-Architecture** - Supports AMD64 and ARM64 (Apple Silicon, AWS Graviton)
@@ -59,15 +59,15 @@ RUN composer install --no-dev --optimize-autoloader
 - `kimtrien/phpx:latest` - Latest stable (currently PHP 8.5)
 - `kimtrien/phpx:php8.5` - PHP 8.5 (recommended)
 - `kimtrien/phpx:php8.4` - PHP 8.4
-- `kimtrien/phpx:php8.5-frankenphp1.4` - Specific versions
-- `kimtrien/phpx:php8.4-frankenphp1.4` - Specific versions
+- `kimtrien/phpx:php8.5-frankenphp1.12` - Specific versions
+- `kimtrien/phpx:php8.4-frankenphp1.12` - Specific versions
 
 ### GitHub Container Registry
 - `ghcr.io/kimtrien/phpx:latest` - Latest stable (currently PHP 8.5)
 - `ghcr.io/kimtrien/phpx:php8.5` - PHP 8.5 (recommended)
 - `ghcr.io/kimtrien/phpx:php8.4` - PHP 8.4
-- `ghcr.io/kimtrien/phpx:php8.5-frankenphp1.4` - Specific versions
-- `ghcr.io/kimtrien/phpx:php8.4-frankenphp1.4` - Specific versions
+- `ghcr.io/kimtrien/phpx:php8.5-frankenphp1.12` - Specific versions
+- `ghcr.io/kimtrien/phpx:php8.4-frankenphp1.12` - Specific versions
 
 ## Multi-Architecture Support
 
@@ -80,7 +80,7 @@ Docker automatically pulls the correct architecture for your platform.
 ## Building Locally
 
 ```bash
-# Default: PHP 8.5, FrankenPHP 1.4
+# Default: PHP 8.5, FrankenPHP 1.12
 ./build.sh
 
 # PHP 8.4
@@ -113,9 +113,9 @@ Using this base image vs building from scratch:
 
 | PHP Version | FrankenPHP Version | Status |
 |-------------|-------------------|--------|
-| 8.5 | 1.4 | ✅ Active |
-| 8.4 | 1.4 | ✅ Active |
-| 8.3 | 1.4 | 🔄 On request |
+| 8.5 | 1.12 | ✅ Active |
+| 8.4 | 1.12 | ✅ Active |
+| 8.3 | 1.12 | 🔄 On request |
 
 ## GitHub Actions Setup
 
