@@ -81,6 +81,7 @@ jobs:
             org.opencontainers.image.licenses=MIT
 
       - name: Build and push Docker image
+        id: build
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -99,5 +100,5 @@ jobs:
         uses: actions/attest-build-provenance@v1
         with:
           subject-name: ghcr.io/kimtrien/phpx
-          subject-digest: ${{ steps.meta.outputs.digest }}
+          subject-digest: ${{ steps.build.outputs.digest }}
           push-to-registry: true
