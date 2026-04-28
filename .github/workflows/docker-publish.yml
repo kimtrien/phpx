@@ -20,10 +20,11 @@ jobs:
       contents: read
       packages: write
       id-token: write
+      attestations: write
     
     strategy:
       matrix:
-        php_version: ['8.4', '8.5']
+        php_version: ['8.4']
         frankenphp_version: ['1.12']
 
     steps:
@@ -54,7 +55,7 @@ jobs:
       - name: Determine if latest tag
         id: latest
         run: |
-          if [ "${{ matrix.php_version }}" = "8.5" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          if [ "${{ matrix.php_version }}" = "8.4" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
             echo "is_latest=true" >> $GITHUB_OUTPUT
           else
             echo "is_latest=false" >> $GITHUB_OUTPUT
