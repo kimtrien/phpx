@@ -60,6 +60,13 @@ jobs:
           else
             echo "is_latest=false" >> $GITHUB_OUTPUT
           fi
+          
+          # Check if this is the default PHP version for version tags
+          if [ "${{ matrix.php_version }}" = "8.5" ] && [[ "${{ github.ref }}" == refs/tags/* ]]; then
+            echo "is_default_php=true" >> $GITHUB_OUTPUT
+          else
+            echo "is_default_php=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Extract metadata
         id: meta
@@ -72,8 +79,12 @@ jobs:
             type=raw,value=latest,enable=${{ steps.latest.outputs.is_latest }}
             type=raw,value=php${{ matrix.php_version }}
             type=raw,value=php${{ matrix.php_version }}-frankenphp${{ matrix.frankenphp_version }}
+            type=semver,pattern={{version}},enable=${{ steps.latest.outputs.is_default_php }}
             type=semver,pattern={{version}},suffix=-php${{ matrix.php_version }}
+            type=semver,pattern={{major}}.{{minor}},enable=${{ steps.latest.outputs.is_default_php }}
             type=semver,pattern={{major}}.{{minor}},suffix=-php${{ matrix.php_version }}
+            type=semver,pattern=v{{version}},enable=${{ steps.latest.outputs.is_default_php }}
+            type=semver,pattern=v{{version}},suffix=-php${{ matrix.php_version }}
             type=sha,prefix=php${{ matrix.php_version }}-
           labels: |
             org.opencontainers.image.title=PHPX
