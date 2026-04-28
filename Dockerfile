@@ -3,11 +3,15 @@ ARG FRANKENPHP_VERSION=1.12
 
 FROM dunglas/frankenphp:${FRANKENPHP_VERSION}-php${PHP_VERSION}-alpine
 
+ARG PHP_VERSION
+ARG FRANKENPHP_VERSION
+
 RUN apk add --no-cache \
     libpng-dev \
     libjpeg-turbo-dev \
     freetype-dev \
     libwebp-dev \
+    libavif-dev \
     libzip-dev \
     icu-dev \
     oniguruma-dev \
@@ -18,14 +22,13 @@ RUN apk add --no-cache \
     unzip \
     bash
 
-RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp \
-    && docker-php-ext-install \
+RUN docker-php-ext-configure gd --with-avif --with-freetype --with-jpeg --with-webp \
+    && docker-php-ext-install -j$(nproc) \
     pdo_pgsql \
     gd \
     intl \
     zip \
     bcmath \
-    opcache \
     && install-php-extensions redis imagick
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
