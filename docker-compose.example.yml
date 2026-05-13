@@ -9,9 +9,21 @@ services:
       - "8000:8000"
     volumes:
       - ./your-app:/app
+      # Optional: Mount custom PHP .ini files
+      # - ./php-custom-ini:/etc/phpx/custom-ini
     environment:
       - APP_ENV=local
       - APP_DEBUG=true
+      # Runtime PHP Configuration (Layer 1: Quick config via env)
+      - PHP_MEMORY_LIMIT=256M
+      - PHP_POST_MAX_SIZE=64M
+      - PHP_UPLOAD_MAX_FILESIZE=64M
+      - PHP_MAX_EXECUTION_TIME=60
+      - PHP_MAX_INPUT_TIME=60
+      - PHP_MAX_INPUT_VARS=1000
+      - PHP_DATE_TIMEZONE=Asia/Ho_Chi_Minh
+      # Optional: Layer 2: Raw PHP config via PHP_INI_EXTRA
+      # - PHP_INI_EXTRA=expose_php=Off\nshort_open_tag=Off
     command: php artisan octane:frankenphp --host=0.0.0.0 --port=8000
     networks:
       - app
