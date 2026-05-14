@@ -33,10 +33,6 @@ RUN docker-php-ext-configure gd --with-avif --with-freetype --with-jpeg --with-w
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy runtime PHP configuration entrypoint
-COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
-RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
 WORKDIR /app
 
 # OCI annotations
@@ -49,6 +45,3 @@ LABEL org.opencontainers.image.licenses="MIT"
 LABEL org.opencontainers.image.source="https://github.com/kimtrien/phpx"
 LABEL org.opencontainers.image.documentation="https://github.com/kimtrien/phpx#readme"
 LABEL org.opencontainers.image.version="php${PHP_VERSION}-frankenphp${FRANKENPHP_VERSION}"
-
-# Set entrypoint for runtime PHP configuration
-ENTRYPOINT ["docker-entrypoint.sh"]
