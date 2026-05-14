@@ -12,7 +12,7 @@ Production-ready PHP base image powered by FrankenPHP with all common extensions
 - **PHP 8.5 & 8.4** - Latest PHP versions
 - **Alpine Linux** - Minimal footprint
 - **Multi-Architecture** - Supports AMD64 and ARM64 (Apple Silicon, AWS Graviton)
-- **Runtime PHP Configuration** - Configure PHP at runtime via environment variables or custom .ini files
+- **Standard PHP Configuration** - Customize PHP with mounted or copied `.ini` files
 - **Pre-installed Extensions:**
   - `pdo_pgsql` - PostgreSQL support
   - `gd` - Image processing
@@ -28,110 +28,48 @@ Production-ready PHP base image powered by FrankenPHP with all common extensions
   - Composer
   - Bash
 
-## Runtime PHP Configuration
+## PHP Configuration
 
-PHPX supports **runtime PHP configuration** with two layers of flexibility. No need to rebuild images - configure PHP at container startup.
+PHPX follows the standard PHP configuration model: use `.ini` files in `/usr/local/etc/php/conf.d/`.
 
-### Layer 1: Quick Config via Environment Variables
-
-Set common PHP settings directly via environment variables. These are automatically converted to PHP `.ini` directives at runtime.
-
-**Supported Environment Variables:**
-
-| Environment Variable | PHP Directive | Description |
-|---------------------|---------------|-------------|
-| `PHP_MEMORY_LIMIT` | `memory_limit` | Memory limit for PHP scripts |
-| `PHP_POST_MAX_SIZE` | `post_max_size` | Maximum size of POST data |
-| `PHP_UPLOAD_MAX_FILESIZE` | `upload_max_filesize` | Maximum upload file size |
-| `PHP_MAX_EXECUTION_TIME` | `max_execution_time` | Maximum execution time |
-| `PHP_MAX_INPUT_TIME` | `max_input_time` | Maximum input parsing time |
-| `PHP_MAX_INPUT_VARS` | `max_input_vars` | Maximum input variables |
-| `PHP_DATE_TIMEZONE` | `date.timezone` | Default timezone |
-| `PHP_DISPLAY_ERRORS` | `display_errors` | Display errors to output |
-| `PHP_DISPLAY_STARTUP_ERRORS` | `display_startup_errors` | Display startup errors |
-| `PHP_ERROR_REPORTING` | `error_reporting` | Error reporting level |
-| `PHP_LOG_ERRORS` | `log_errors` | Log errors to file |
-| `PHP_ERROR_LOG` | `error_log` | Error log file path |
-| `PHP_MAX_FILE_UPLOADS` | `max_file_uploads` | Maximum file uploads |
-| `PHP_OUTPUT_BUFFERING` | `output_buffering` | Output buffering |
-| `PHP_DEFAULT_CHARSET` | `default_charset` | Default charset |
-| `PHP_REALPATH_CACHE_SIZE` | `realpath_cache_size` | Realpath cache size |
-| `PHP_REALPATH_CACHE_TTL` | `realpath_cache_ttl` | Realpath cache TTL |
-| `PHP_OPCACHE_ENABLE` | `opcache.enable` | Enable OPcache |
-| `PHP_OPCACHE_MEMORY_CONSUMPTION` | `opcache.memory_consumption` | OPcache memory |
-| `PHP_OPCACHE_MAX_ACCELERATED_FILES` | `opcache.max_accelerated_files` | OPcache max files |
-| `PHP_OPCACHE_REVALIDATE_FREQ` | `opcache.revalidate_freq` | OPcache revalidate frequency |
-| `PHP_SESSION_SAVE_HANDLER` | `session.save_handler` | Session save handler |
-| `PHP_SESSION_SAVE_PATH` | `session.save_path` | Session save path |
-| `PHP_SESSION_GC_MAXLIFETIME` | `session.gc_maxlifetime` | Session GC max lifetime |
-
-**Example:**
-
-```yaml
-services:
-  app:
-    image: kimtrien/phpx
-    environment:
-      - PHP_MEMORY_LIMIT=256M
-      - PHP_POST_MAX_SIZE=64M
-      - PHP_UPLOAD_MAX_FILESIZE=64M
-      - PHP_MAX_EXECUTION_TIME=60
-      - PHP_MAX_INPUT_TIME=60
-      - PHP_MAX_INPUT_VARS=1000
-      - PHP_DATE_TIMEZONE=Asia/Ho_Chi_Minh
-```
-
-### Layer 2: Deep Config via Custom `.ini` Files
-
-For advanced configuration, mount custom `.ini` files or use `PHP_INI_EXTRA` for raw PHP directives.
-
-**Option A: Mount Custom `.ini` Files**
+### Mount a custom `.ini` file
 
 ```yaml
 services:
   app:
     image: kimtrien/phpx
     volumes:
-      - ./php-custom-ini:/etc/phpx/custom-ini
+      - ./php-custom-ini/uploads.ini:/usr/local/etc/php/conf.d/zzz-uploads.ini:ro
 ```
 
-Create `.ini` files in `./php-custom-ini/` directory:
+Example `uploads.ini`:
 
 ```ini
-# ./php-custom-ini/custom-performance.ini
-opcache.enable=1
-opcache.memory_consumption=128
-opcache.max_accelerated_files=10000
-opcache.revalidate_freq=60
+post_max_size=64M
+upload_max_filesize=64M
+memory_limit=256M
+max_execution_time=60
 ```
 
-**Option B: Use `PHP_INI_EXTRA` Environment Variable**
+### Copy a custom `.ini` file into your image
 
-```yaml
-services:
-  app:
-    image: kimtrien/phpx
-    environment:
-      - PHP_INI_EXTRA=expose_php=Off\nshort_open_tag=Off\nmax_execution_time=300
+```dockerfile
+FROM kimtrien/phpx:php8.5
+
+COPY docker/php/uploads.ini /usr/local/etc/php/conf.d/zzz-uploads.ini
 ```
 
-### Configuration Priority
+### Verify active configuration
 
-1. Base PHP defaults (from FrankenPHP image)
-2. Custom `.ini` files from `/etc/phpx/custom-ini/` (alphabetical order)
-3. `PHP_INI_EXTRA` environment variable
-4. Individual `PHP_*` environment variables (highest priority)
+```bash
+docker run --rm kimtrien/phpx:php8.5 php --ini
+docker run --rm kimtrien/phpx:php8.5 php -i | grep -E "post_max_size|upload_max_filesize|memory_limit|max_execution_time"
+```
 
-### Universal Application
+### More examples
 
-The runtime configuration applies to **all PHP execution modes**:
-- PHP CLI commands
-- FrankenPHP web server
-- Laravel Octane workers
-- Laravel Horizon workers
-- Laravel scheduler
-
-No need to configure separately for each mode.
+- English: [docs/php-ini-setup.md](docs/php-ini-setup.md)
+- Vietnamese: [docs/php-ini-setup.vi.md](docs/php-ini-setup.vi.md)
 
 ## Quick Start
 
