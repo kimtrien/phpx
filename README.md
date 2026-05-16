@@ -14,6 +14,7 @@ Production-ready PHP base image powered by FrankenPHP with all common extensions
 - **Multi-Architecture** - Supports AMD64 and ARM64 (Apple Silicon, AWS Graviton)
 - **Standard PHP Configuration** - Customize PHP with mounted or copied `.ini` files
 - **Pre-installed Extensions:**
+  - `pdo_mysql` - MySQL support
   - `pdo_pgsql` - PostgreSQL support
   - `gd` - Image processing
   - `intl` - Internationalization

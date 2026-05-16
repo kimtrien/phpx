@@ -15,6 +15,7 @@ RUN apk add --no-cache \
     libzip-dev \
     icu-dev \
     oniguruma-dev \
+    mysql-dev \
     postgresql-dev \
     imagemagick \
     imagemagick-dev \
@@ -24,6 +25,7 @@ RUN apk add --no-cache \
 
 RUN docker-php-ext-configure gd --with-avif --with-freetype --with-jpeg --with-webp \
     && docker-php-ext-install -j$(nproc) \
+    pdo_mysql \
     pdo_pgsql \
     gd \
     intl \
