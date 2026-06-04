@@ -17,10 +17,14 @@ RUN apk add --no-cache \
     oniguruma-dev \
     mysql-dev \
     postgresql-dev \
+    postgresql-client \
     imagemagick \
     imagemagick-dev \
     git \
+    zip \
     unzip \
+    gzip \
+    tar \
     bash
 
 RUN docker-php-ext-configure gd --with-avif --with-freetype --with-jpeg --with-webp \
