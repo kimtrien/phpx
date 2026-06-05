@@ -1,14 +1,8 @@
 name: Build and Push Multi-Arch Docker Images
 
 on:
-  push:
-    branches:
-      - main
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - main
+  release:
+    types: [published]
   workflow_dispatch:
 
 jobs:
@@ -53,7 +47,7 @@ jobs:
       - name: Determine if latest tag
         id: latest
         run: |
-          if [ "${{ matrix.php_version }}" = "8.5" ] && [ "${{ github.ref }}" = "refs/heads/main" ]; then
+          if [ "${{ matrix.php_version }}" = "8.5" ] && [ "${{ github.event_name }}" = "release" ]; then
             echo "is_latest=true" >> $GITHUB_OUTPUT
           else
             echo "is_latest=false" >> $GITHUB_OUTPUT
