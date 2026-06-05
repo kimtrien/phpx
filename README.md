@@ -20,9 +20,11 @@ Production-ready PHP base image powered by FrankenPHP with all common extensions
   - `intl` - Internationalization
   - `zip` - Archive handling
   - `bcmath` - Arbitrary precision math
+  - `ftp` - FTP support
   - `opcache` - Performance optimization
   - `redis` - Redis client
   - `imagick` - Advanced image processing
+  - `ssh2` - SFTP/SSH support
 - **System Tools:**
   - ImageMagick
   - Git

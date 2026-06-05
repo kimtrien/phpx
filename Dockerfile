@@ -18,6 +18,7 @@ RUN apk add --no-cache \
     mysql-dev \
     postgresql-dev \
     postgresql-client \
+    libssh2-dev \
     imagemagick \
     imagemagick-dev \
     git \
@@ -35,7 +36,8 @@ RUN docker-php-ext-configure gd --with-avif --with-freetype --with-jpeg --with-w
     intl \
     zip \
     bcmath \
-    && install-php-extensions redis imagick
+    ftp \
+    && install-php-extensions redis imagick ssh2
 
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
